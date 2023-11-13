@@ -2,7 +2,7 @@ from typing import Dict, List, Tuple
 from langchain.schema import AIMessage, HumanMessage, SystemMessage
 
 
-def format_role_prompting(role_dict: Dict[str, str]):
+def format_role_prompting(role_dict: Dict[str, str]) -> List[SystemMessage]:
     """
     Formats a dictionary of role-related descriptions into a structured format.
 
