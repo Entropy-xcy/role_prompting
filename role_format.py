@@ -1,5 +1,11 @@
 from typing import Dict, List, Tuple
 from langchain.schema import AIMessage, HumanMessage, SystemMessage
+from langchain.prompts.chat import (
+    ChatPromptTemplate,
+    SystemMessagePromptTemplate,
+    AIMessagePromptTemplate,
+    HumanMessagePromptTemplate,
+)
 
 
 def format_role_prompting(role_dict: Dict[str, str]) -> List[SystemMessage]:
