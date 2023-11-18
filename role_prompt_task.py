@@ -4,7 +4,8 @@ import datasets
 from rouge_score import rouge_scorer, scoring
 from lm_eval.base import rf, Task
 from lm_eval.metrics import mean
-
+from typing import List, Dict
+from role_format import format_role_prompting_causal
 
 try:
     import bleurt
@@ -43,7 +44,10 @@ QA_PROMPT = (
 )
 
 
-class TruthfulQAMultipleChoice(Task):
+class TruthfulQAMultipleChoiceRole(Task):
+    def __init__(self, role: Dict[str, str]):
+        super().__init__()
+        self.role_prefix = format_role_prompting_causal(role)
     VERSION = 1
     DATASET_PATH = "truthful_qa"
     DATASET_NAME = "multiple_choice"
@@ -101,7 +105,7 @@ class TruthfulQAMultipleChoice(Task):
         """
 
         def get_lls(targets):
-            prefix = "Professor X is answering the following questions: "
+            prefix = self.role_prefix
             return [rf.loglikelihood(prefix + ctx, " " + t)[0] for t in targets]
 
         # MC1 and MC2 targets are not always the same set of strings so we collect
@@ -109,17 +113,6 @@ class TruthfulQAMultipleChoice(Task):
         req =  get_lls(doc["mc1_targets"]["choices"]) + get_lls(
             doc["mc2_targets"]["choices"]
         )
-        # print("Context: ", ctx)
-        # print("Request: ", req)
-        # import pickle 
-        # # dump 
-        # with open('req.pkl', 'wb') as f:
-        #     pickle.dump(req, f)
-        # with open('ctx.pkl', 'wb') as f:
-        #     pickle.dump(ctx, f)
-        # with open('doc.pkl', 'wb') as f:
-        #     pickle.dump(doc, f)
-        # exit()
             
         return req
 

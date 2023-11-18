@@ -69,12 +69,42 @@ def format_role_prompting(role_dict: Dict[str, str]) -> List[SystemMessage]:
     return [SystemMessage(content=complete_message)]
 
 
+def format_role_prompting_causal(role_dict: Dict[str, str]) -> str:
+    # List to store parts of the message
+    message_parts = []
+
+    # Mapping each key to a descriptive sentence
+    descriptions = {
+        "occupation": "work as a {value},",
+        "education": "have a {value},",
+        "gender": "is identified as {value},",
+        "age": "in his/her {value} years,",
+        "nationality": "and of {value} nationality."
+    }
+
+    # Iterate through each key-value pair in the dictionary
+    for key, value in role_dict.items():
+        if value != "none":
+            # Format the sentence based on the key and add it to the message_parts list
+            message_parts.append(descriptions[key].format(value=value))
+
+    # Joining all parts to form a complete message
+    complete_message = ' '.join(message_parts)
+    prefix = "The following text shows the conversation with someone who"
+    complete_message = prefix + " " + complete_message + " "
+
+    # Creating a SystemMessage with the complete message
+    return complete_message
+
+
 if __name__ == "__main__":
-    formatted = format_role_prompting({
+    metric = {
         "occupation": "lawyer",
         "education": "Law Degree",
         "gender": "male",
         "age": "mid-aged",
         "nationality": "American"
-    })
-    print(formatted)
+    }
+    formatted = format_role_prompting(metric)
+    causal_prompt = format_role_prompting(metric)
+    print(causal_prompt)
