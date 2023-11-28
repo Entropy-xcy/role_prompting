@@ -106,5 +106,5 @@ if __name__ == "__main__":
         "nationality": "American"
     }
     formatted = format_role_prompting(metric)
-    causal_prompt = format_role_prompting(metric)
+    causal_prompt = format_role_prompting_causal(metric)
     print(causal_prompt)
