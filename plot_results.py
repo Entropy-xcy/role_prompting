@@ -1,4 +1,4 @@
-itimport matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import os
@@ -25,6 +25,6 @@ for file in tqdm(os.listdir('results')):
             results.append(data_dict)
 
 df = pd.DataFrame(results)
-df.to_excel('results_all.xlsx')
+df.to_csv('results_all.csv')
 
 print(df)
